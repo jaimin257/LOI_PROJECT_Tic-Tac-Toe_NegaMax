@@ -60,6 +60,8 @@ function handleClick(e)
 		console.log("AI_MOVE : " + AI_move);
 		make_move(Math.floor(AI_move/number),Math.floor(AI_move%number));
 		checkwinner();
+		if(resultstatus.innerHTML == "X won" || resultstatus.innerHTML == "O won" || resultstatus.innerHTML == "It's Tie")
+			return;
 	}
 }
 
@@ -214,7 +216,7 @@ function AI_turn()
 			{
 				board[i*number + j] = "O";
 				console.log("mini on : " + board);
-				var moveVal = (-1)*(NegaMax(board,0,0));		//0 for human and 1 for AI(computer)...
+				var moveVal = (-1)*(NegaMax(board,0,0));		//pid = 0 for human and pid = 1 for AI(computer)...
 				console.log("moveval : " + moveVal);
 				board[i*number + j] = "_";
 				if (moveVal > bestVal)
@@ -231,13 +233,13 @@ function AI_turn()
 function NegaMax(board,depth,pid)
 {
 	var score = Evaluate(board);
-	if (score == 100 && pid == 0)
+	if (score == 100 && pid == 0)			//AI wins when human's turn...AI already won
 		return -100;
-	else if(score == 100 && pid == 1)
+	else if(score == 100 && pid == 1)		//AI wins when computer's turn...
 		return 100;
-	if (score == -100 && pid == 0)
+	if (score == -100 && pid == 0)			//Human wins when human's turn...
 		return 100;
-	else if(score == -100 && pid == 1)
+	else if(score == -100 && pid == 1)		//Human wins when AI's turn...
 		return -100;
 
 	if(depth>MAX_DEPTH)
